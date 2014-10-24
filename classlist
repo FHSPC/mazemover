@@ -1,0 +1,14 @@
+Client
+	classes
+		MazeMover //main class
+		Player 
+		BoardMovementEvent
+		BoardActionEvent
+		Battle --implements BoardAction
+		Trade  --implements BoardAction
+		CardEvent
+	Interfaces
+		BoardAction
+	Enum
+		Card
+
