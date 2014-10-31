@@ -4,9 +4,12 @@ Client
 		Player 
 		BoardMovementEvent
 		BoardActionEvent
+		PlayerMovementEvent
+		ChatEvent
 		Battle --implements BoardAction
 		Trade  --implements BoardAction
 		CardEvent
+		
 	Interfaces
 		BoardAction
 	Enum
