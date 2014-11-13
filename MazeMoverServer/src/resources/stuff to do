@@ -1,0 +1,2 @@
+I send the player a message that it is there turn
+I recieve a board movement event, that I then forward to the other clients

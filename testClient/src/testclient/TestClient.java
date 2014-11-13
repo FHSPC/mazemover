@@ -29,7 +29,7 @@ public class TestClient {
    public static void main(String[] args) throws IOException {
       String serverAddress = JOptionPane.showInputDialog(
          "Enter IP Address of a machine that is\n" +
-         "running the date service on port 9390:");
+         "running the game service on port 9390:");
       String name = JOptionPane.showInputDialog("name: ");
       connectToServer(serverAddress);
       BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
@@ -53,29 +53,7 @@ public class TestClient {
    public static void chatClient(){
       Thread thread= new Thread(){
          @Override public void run(){
-            boolean hasBanana=true;
-            loop0:while(true)
-            {
-               System.out.println("l0");
-               loop1:for(int i=0;i<9;i++)
-               {
-                  System.out.println("l1");
-                  loop2:while(true)
-                  {
-                     System.out.println("l2 start");
-                     if(hasBanana)
-                     {
-                        continue loop1;
-                     }
-                     System.out.println("l2 mid");
-                     if(!hasBanana)
-                     {
-                        break loop0;
-                     }
-                     
-                  }
-               }
-            }
+         
          }
       };
       thread.start();

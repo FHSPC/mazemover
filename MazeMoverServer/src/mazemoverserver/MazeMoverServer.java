@@ -10,9 +10,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 import java.util.logging.Level;
@@ -24,37 +28,59 @@ import java.util.logging.Logger;
 public class MazeMoverServer {
    public static Properties serverconfig=new Properties();
    public static String  serverconfigpath="serverconfig.properties";
-//   static{
-//      InputStream inputStream = "".getClass().getClassLoader().getResourceAsStream(serverconfigpath);
-//      try {
-//         serverconfig.load(inputStream);
-//      } catch (IOException ex) {
-//         Logger.getLogger(MazeMoverServer.class.getName()).log(Level.SEVERE, null, ex);
-//      }
-//      if (inputStream == null) {
-//         try {
-//            throw new FileNotFoundException("property file '" + serverconfigpath + "' not found in the classpath");
-//         } catch (FileNotFoundException ex) {
-//            Logger.getLogger(MazeMoverServer.class.getName()).log(Level.SEVERE, null, ex);
-//         }
-//      }
-//   }
-   
+   public static int turns=0;
+   public static int whoPlayes=0;
+   public static int numPlayers=0;
+   public static ArrayList<PlayerSocket> sockets= new ArrayList<>();
    public static void main(String[] args) throws IOException{
       ServerSocket listener = new ServerSocket(9390);
+      mainLoop:
       while (true) {
-         Socket socket = listener.accept();
+         PlayerSocket socket = (PlayerSocket) listener.accept();
+         sockets.add(socket);
+         socket.playerNum=numPlayers;
+         numPlayers++;
          async(socket,new function(){
             @Override
             public void run(Object sock) {
-               Socket socket= (Socket) sock;
+               PlayerSocket socket= (PlayerSocket) sock;
                try {
-                  PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                  out.println(new Date().toString());
-                  BufferedReader input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                  String name=input.readLine();
-                  System.out.print(name);
-                  out.println("hello "+name);
+//                  PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+//                  out.println(new Date().toString());
+                  
+                     InputStream inStream= socket.getInputStream();
+                     ObjectInputStream objInStream = new ObjectInputStream(inStream);
+                     try {
+                        Object obj = objInStream.readObject();
+                        if(obj instanceof String)
+                        {
+                           for(PlayerSocket Player:sockets){
+                                 OutputStream pos=Player.getOutputStream();
+                                 ObjectOutputStream poos= new ObjectOutputStream(pos);
+                                 poos.writeObject(obj);
+                           }
+                        }
+                        else{
+                           if(socket.playerNum==turns%numPlayers)
+                           {
+                              for(PlayerSocket Player:sockets){
+                                 OutputStream pos=Player.getOutputStream();
+                                 ObjectOutputStream poos= new ObjectOutputStream(pos);
+                                 poos.writeObject(obj);
+                              }
+                              OutputStream pos=socket.getOutputStream();
+                              ObjectOutputStream poos= new ObjectOutputStream(pos);
+                              poos.writeObject("outOfTurn");
+                           }
+                        }
+                     } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(MazeMoverServer.class.getName()).log(Level.SEVERE, null, ex);
+                     }
+                     turns++;
+//                  BufferedReader input = new BufferedReader(new InputStreamReader(inStream));
+//                  String name=input.readLine();
+//                  System.out.print(name);
+//                  out.println("hello "+name);
                }catch (IOException ex) {
                   Logger.getLogger(MazeMoverServer.class.getName()).log(Level.SEVERE, null, ex);
                } finally {
@@ -64,7 +90,7 @@ public class MazeMoverServer {
                      Logger.getLogger(MazeMoverServer.class.getName()).log(Level.SEVERE, null, ex);
                   }
                }
-            }   
+            }
          });
       }
     }
