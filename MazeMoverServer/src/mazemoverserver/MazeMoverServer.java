@@ -70,7 +70,8 @@ public class MazeMoverServer {
                               }
                               OutputStream pos=socket.getOutputStream();
                               ObjectOutputStream poos= new ObjectOutputStream(pos);
-                              poos.writeObject("outOfTurn");
+                              // މis u789
+                              poos.writeObject("މoutOfTurn");
                            }
                         }
                      } catch (ClassNotFoundException ex) {

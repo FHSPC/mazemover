@@ -10,7 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Properties;
@@ -30,12 +34,10 @@ public class TestClient {
       String serverAddress = JOptionPane.showInputDialog(
          "Enter IP Address of a machine that is\n" +
          "running the game service on port 9390:");
-      String name = JOptionPane.showInputDialog("name: ");
       connectToServer(serverAddress);
       BufferedReader input = new BufferedReader(new InputStreamReader(s.getInputStream()));
       String answer = input.readLine();
       PrintWriter out =new PrintWriter(s.getOutputStream(),true);
-      out.println(name);
       JOptionPane.showMessageDialog(null, answer);
       JButton button = new JButton();
       button.addActionListener(new ActionListener(){
@@ -65,10 +67,47 @@ public class TestClient {
      toServer=new PrintWriter(s.getOutputStream(),true);
      
    }
-   public static void sendChat(String message){
+   public static void sendChat(String message) throws IOException{
+      OutputStream pos=s.getOutputStream();
+      ObjectOutputStream poos= new ObjectOutputStream(pos);
+      poos.writeObject(message);
+   }
+   public static void sendBoardMovement(Object obj) throws IOException{
+      OutputStream pos=s.getOutputStream();
+      ObjectOutputStream poos= new ObjectOutputStream(pos);
+      poos.writeObject(obj);
+   }
+   public static void chatHandler(String chat){
       
    }
-   public static String[] getChat(){
-      return new String[1];
+   public static void boardHandler(Object obj){
+      
+   }
+   public static void outOfTurnHandler(){
+      
+   }
+   public static void severEventHandler() throws IOException, ClassNotFoundException
+   {
+      InputStream inStream= s.getInputStream();
+      ObjectInputStream objInStream = new ObjectInputStream(inStream);
+      Object obj = objInStream.readObject();
+      if(obj instanceof String)
+      {
+         String message = (String)obj;
+         //މis u789 
+         if(message.equals("މoutOfTurn"))
+         {
+            outOfTurnHandler();
+         }
+         else
+         {
+            chatHandler(message);
+         }
+      }
+      //pretend that this is if(obj isinstanceof BoardMovementEvent
+      else
+      {
+         boardHandler(obj);
+      }
    }
 }
