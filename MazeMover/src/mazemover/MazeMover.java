@@ -23,29 +23,35 @@ public class MazeMover
    {
        //
    }
-   public static void connectToServer(String serverAddress) throws IOException{
+   public static void connectToServer(String serverAddress) throws IOException
+   {
       s = new Socket(serverAddress, 9390);
       fromServer=new BufferedReader(new InputStreamReader(s.getInputStream()));
       toServer=new PrintWriter(s.getOutputStream(),true);
      
    }
-   public static void sendChat(String message) throws IOException{
+   public static void sendChat(String message) throws IOException
+   {
       OutputStream pos=s.getOutputStream();
       ObjectOutputStream poos= new ObjectOutputStream(pos);
       poos.writeObject(message);
    }
-   public static void sendBoardMovement(Object obj) throws IOException{
+   public static void sendBoardMovement(Object obj) throws IOException
+   {
       OutputStream pos=s.getOutputStream();
       ObjectOutputStream poos= new ObjectOutputStream(pos);
       poos.writeObject(obj);
    }
-   public static void chatHandler(String chat){
+   public static void chatHandler(String chat)
+   {
       
    }
-   public static void boardHandler(Object obj){
+   public static void boardHandler(Object obj)
+   {
       
    }
-   public static void outOfTurnHandler(){
+   public static void outOfTurnHandler()
+   {
       
    }
    public static void severEventHandler() throws IOException, ClassNotFoundException
