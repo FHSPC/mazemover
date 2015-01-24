@@ -5,8 +5,11 @@ package mazemover;
  */
 public class BoardMovementEvent extends MovementEvent
 {
-    public BoardMovementEvent(int direction)
+    public BoardMovementEvent(int direction, int horizontal, int vertical, Player player)
     {
-        this.movetype = MovementEvent.movetypechoices[direction];
+        this.movetype = super.movetypechoices[direction];
+        this.horizontalchange = horizontal;
+        this.verticalchange = vertical;
+        this.player = player;
     }
 }
