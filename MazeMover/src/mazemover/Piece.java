@@ -1,7 +1,7 @@
 package mazemover;
 import javax.swing.ImageIcon;
 /**
- * this class represents a mobile piece of the maze
+ * This class represents a mobile piece of the maze
  * @author alecastle
  */
 public class Piece
