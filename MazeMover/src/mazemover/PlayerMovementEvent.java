@@ -12,4 +12,8 @@ public class PlayerMovementEvent extends MovementEvent
         this.verticalchange = vertical;
         this.player = player;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 4477609b690ef9d58c8662883eafdcf13bbc6f46
