@@ -22,6 +22,10 @@ public class Piece
      * Card present on the Piece, if applicable
      */
     public Card card;
+    /**
+     * two element array representing the piece's location on the board
+     */
+    public int[] location = new int[2];
     private boolean hasitem;
     private boolean hasplayer;
     private boolean hascard;

@@ -18,6 +18,10 @@ public class Player
      * the Player's score
      */
     public int score = 0;
+    /**
+     * two element array representing the player's location on the board
+     */
+    public int[] location = new int[2];
     public Player(String file)
     {
         //

@@ -6,7 +6,7 @@ import javax.swing.ImageIcon;
  */
 public enum Card
 {
-    ;
+    ;//please insert types of cards here in the correct enum format
     /**
      * the image used for the card on the board
      */
